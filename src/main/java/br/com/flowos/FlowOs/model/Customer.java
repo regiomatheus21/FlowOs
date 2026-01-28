@@ -8,8 +8,6 @@ import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDate;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -20,7 +18,7 @@ public class Customer {
     @EqualsAndHashCode.Include
     private Long id;
     @Column(nullable = false)
-    private String nome;
+    private String name;
     @Column(nullable = false)
     private String cpf;
 }
