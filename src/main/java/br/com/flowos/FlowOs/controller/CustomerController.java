@@ -33,18 +33,14 @@ public class CustomerController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Customer> buscarCustomer(@PathVariable Long id){
-       Optional<Customer> customer = customerService.buscarCustomer(id);
-       if(customer.isPresent()){
-           return ResponseEntity.ok().body(customer.get());
-       }
-        return ResponseEntity.notFound().build();
+      return customerService.buscarCustomer(id)
+              .map(ResponseEntity::ok)
+              .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deletar (@PathVariable Long id){
+    public ResponseEntity<Void> deletar (@PathVariable Long id){
         customerService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
-
-
 }

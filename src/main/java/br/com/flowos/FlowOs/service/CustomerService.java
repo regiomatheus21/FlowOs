@@ -7,15 +7,16 @@ import br.com.flowos.FlowOs.repository.CustomerRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
-
-  private final CustomerRepository repository;
+    private final CustomerRepository repository;
 
     @Transactional
     public CustomerDto adicionar(Customer customer) {
@@ -34,9 +35,10 @@ public class CustomerService {
     }
 
     @Transactional
-    public boolean deletar(Long id) {
-        if( !buscarCustomer(id).isPresent()){return false;}
+    public void deletar(Long id) {
+        if(!repository.existsById(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Customer nao encontrado");
+        }
         repository.deleteById(id);
-        return true;
     }
 }
