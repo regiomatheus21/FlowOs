@@ -1,7 +1,9 @@
 package br.com.flowos.FlowOs.controller;
 
+import br.com.flowos.FlowOs.dto.CustomerDto;
 import br.com.flowos.FlowOs.model.Customer;
 import br.com.flowos.FlowOs.service.CustomerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,32 +19,28 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("v1/customer")
+@RequestMapping("v1/customers")
 @RequiredArgsConstructor
 public class CustomerController {
 
     private final CustomerService customerService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.OK)
-    public void adicinar (@RequestBody Customer customer){
-        customerService.adicionar(customer);
+    public ResponseEntity<CustomerDto> adicinar (@Valid @RequestBody Customer customer){
+        CustomerDto customerDto= customerService.adicionar(customer);
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerDto);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Customer> buscarCustomer(@PathVariable Long id){
-       Optional<Customer> customer = customerService.buscarCustomer(id);
-       if(customer.isPresent()){
-           return ResponseEntity.ok().body(customer.get());
-       }
-        return ResponseEntity.notFound().build();
+      return customerService.buscarCustomer(id)
+              .map(ResponseEntity::ok)
+              .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void deletar (@PathVariable Long id){
+    public ResponseEntity<Void> deletar (@PathVariable Long id){
         customerService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
-
-
 }
