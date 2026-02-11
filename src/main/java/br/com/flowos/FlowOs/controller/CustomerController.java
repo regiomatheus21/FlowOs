@@ -1,6 +1,6 @@
 package br.com.flowos.FlowOs.controller;
 
-import br.com.flowos.FlowOs.dto.CustomerDto;
+import br.com.flowos.FlowOs.dto.CustomerResponseDTO;
 import br.com.flowos.FlowOs.model.Customer;
 import br.com.flowos.FlowOs.service.CustomerService;
 import jakarta.validation.Valid;
@@ -23,8 +23,8 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<CustomerDto> adicinar (@Valid @RequestBody Customer customer){
-        CustomerDto customerDto= customerService.adicionar(customer);
+    public ResponseEntity<CustomerResponseDTO> adicinar (@Valid @RequestBody Customer customer){
+        CustomerResponseDTO customerDto= customerService.adicionar(customer);
         return ResponseEntity.status(HttpStatus.CREATED).body(customerDto);
     }
 
