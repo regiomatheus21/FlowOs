@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="20260217-V0002-criacao-empresa" author="Regio">
+        <preConditions  onFail="HALT">
+            <not><tableExists tableName="empresa"></tableExists></not>
+        </preConditions>
+            <createTable tableName="empresa">
+                <column name="id" type="BIGINT" autoIncrement="false" >
+                    <constraints primaryKey="true" nullable="false"></constraints>
+                </column>
+
+                <column name="cnpj" type="VARCHAR(20)"></column>
+
+                <column name="email" type="VARCHAR(40)">
+                    <constraints nullable="false"></constraints>
+                </column>
+
+                <column name="endereco" type="VARCHAR(80)">
+                    <constraints nullable="false"></constraints>
+                </column>
+
+                <column name="nome" type="VARCHAR(80)">
+                    <constraints nullable="false"></constraints>
+                </column>
+
+                <column name="telefone" type="VARCHAR(20)">
+                    <constraints nullable="false"></constraints>
+                </column>
+            </createTable>
+    </changeSet>
+</databaseChangeLog>
