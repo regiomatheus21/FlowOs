@@ -5,7 +5,11 @@ import br.com.flowos.FlowOs.dto.EmpresaResponseDTO;
 import br.com.flowos.FlowOs.model.Empresa;
 import br.com.flowos.FlowOs.repository.EmpresaRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @Service
 public class EmpresaService {
@@ -29,5 +33,24 @@ public class EmpresaService {
         empresaResponseDTO.setId(salva.getId());
         empresaResponseDTO.setNome(salva.getNome());
         return empresaResponseDTO;
+    }
+
+    public EmpresaResponseDTO getById(Long id) {
+        Optional empresa = Optional.ofNullable(empresaRepository.findById(id));
+        Empresa empresaRetorno = (Empresa) empresa.get();
+        if(empresa.isPresent()){
+            EmpresaResponseDTO response = new EmpresaResponseDTO();
+            response.setNome(empresaRetorno.getNome());
+            response.setId(empresaRetorno.getId());
+            return response;
+        }
+        return null;
+    }
+
+    public void delete(Long id) {
+       if(!empresaRepository.existsById(id)){
+           throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Empresa nao encontrado");
+       };
+        empresaRepository.deleteById(id);
     }
 }
